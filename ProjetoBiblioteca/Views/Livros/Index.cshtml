@@ -1,0 +1,96 @@
+﻿
+@using X.PagedList.Mvc.Core
+@model X.PagedList.StaticPagedList<ProjetoBiblioteca.Models.Livro>
+
+@{
+    ViewBag.Title = "Livros";
+}
+
+<h1>Meus Livros</h1>
+@using (Html.BeginForm("Index","Livros", FormMethod.Get, new{ @class = "form-inline"})) {
+
+
+    <div class="input-group pull-right">
+        <input type="text" class="form-control" placeholder="Buscar Livro..." name="busca" value="@ViewBag.Busca">
+        <span class="input-group-btn">
+            <button class="btn btn-info" type="submit">Buscar</button>
+        </span>
+        <span class="input-group-btn">
+            <a asp-action="Create" class="btn btn-success">Criar novo</a>
+        </span>
+    </div>
+    
+
+ }
+
+
+<div class="row">
+    <div class="col-md-12">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        Nome
+                    </th>
+                    <th>
+                        Autor
+                    </th>
+                    <th>
+                        Editora
+                    </th>
+                    <th>
+                        Data de publicação
+                    </th>
+                    <th>
+                        Páginas
+                    </th>
+                    <th>
+                        Categoria
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Nome)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Autor)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Editora)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.AnoPublicacao)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Paginas)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Categoria)
+                        </td>
+                        <td>
+                            <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning">Editar</a> |
+                            <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-info">Detalhes</a> |
+                            <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger">Deletar</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-6">
+        @Html.PagedListPager(Model, pagina => Url.Action("Index", new { pagina, busca = ViewBag.Busca}))
+    </div>
+    <div class="col-md-6">
+        <span class="pull-right">
+            Listando registros de @Model.FirstItemOnPage a @Model.LastItemOnPage de um total de @Model.TotalItemCount
+        </span>
+    </div>
+</div>
